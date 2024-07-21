@@ -26,7 +26,7 @@ const Header = () => {
   return (
     <header>
       <Link to="/" className="logo">
-        MyBlog
+      Silicon Stories
       </Link>
       <nav>
         {userInfo ? (

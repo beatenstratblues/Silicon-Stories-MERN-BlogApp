@@ -13,7 +13,7 @@ const IndexPage = () => {
   return <div>
     {
       posts.map((a)=>{
-        return <BlogPost Postdata={a}/>
+        return <BlogPost Postdata={a} key={a._id}/>
       })
     }
   </div>;

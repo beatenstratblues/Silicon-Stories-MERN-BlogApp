@@ -1,35 +1,49 @@
-import React, { useState } from "react";
-import { Navigate } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { Navigate, useParams } from "react-router-dom";
 import Editor from "../Editor";
 
-
-const CreatePost = () => {
+const EditPost = () => {
+  const { id } = useParams();
   const [title, setTitle] = useState("");
   const [summary, setSummary] = useState("");
   const [content, setContent] = useState("");
   const [file, setFile] = useState("");
   const [redirect, setredirect] = useState(false);
 
-  async function createNewPost(ev) {
+  useEffect(() => {
+    fetch("http://localhost:8000/post/" + id).then((respose) => {
+      respose.json().then((postInfo) => {
+        setTitle(postInfo.title);
+        setContent(postInfo.content);
+        setSummary(postInfo.summary);
+      });
+    });
+  }, [id]);
+
+  async function updatePost(ev) {
     const Data = new FormData();
     Data.set("title", title);
     Data.set("summary", summary);
     Data.set("content", content);
-    Data.set("file", file[0]);
-
+    Data.set("id",id);
+    if (file?.[0]) {
+      Data.set("file", file?.[0]);
+    }
     ev.preventDefault();
     const response = await fetch("http://localhost:8000/post", {
-      method: "POST",
+      method: "PUT",
       body: Data,
       credentials:"include",
     });
 
-    if (response.ok) setredirect(true);
+    if (response.ok) {
+      setredirect(true);
+    }
   }
 
-  if (redirect) return <Navigate to={"/"} />;
+  if (redirect) return <Navigate to={"/post/" + id} />;
   return (
-    <form onSubmit={createNewPost}>
+    <form onSubmit={updatePost}>
       <input
         type="title"
         placeholder="Title"
@@ -52,10 +66,10 @@ const CreatePost = () => {
           setFile(e.target.files);
         }}
       />
-      <Editor onChange={setContent} value={content}/>
-      <button style={{ marginTop: "5px" }}>Create Post</button>
+      <Editor onChange={setContent} value={content} />
+      <button style={{ marginTop: "5px" }}>Update Post</button>
     </form>
   );
 };
 
-export default CreatePost;
+export default EditPost;

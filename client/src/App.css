@@ -1,7 +1,9 @@
-*{
+* {
   box-sizing: border-box;
 }
-
+a {
+  cursor: pointer;
+}
 body {
   color: #222;
 }
@@ -11,14 +13,14 @@ img {
 }
 
 main {
-  padding:10px;
-  max-width: 700px;
-  margin:0 auto;
+  padding: 10px;
+  max-width: 960px;
+  margin: 0 auto;
 }
 
 header {
-  display:flex;
-  justify-content:space-between;
+  display: flex;
+  justify-content: space-between;
   margin-bottom: 50px;
   margin-top: 20px;
   align-items: center;
@@ -41,26 +43,42 @@ header nav {
 
 div.post {
   display: grid;
-  grid-template-columns: 0.9fr 1.1fr;
+  grid-template-columns: 1fr;
+  /* grid-template-columns: 0.9fr 1.1fr; */
   gap: 20px;
   margin-bottom: 10px;
+  border: #d5caca solid;
+  padding: 15px;
+  border-radius: 10px;
+  box-shadow: 6px 6px 10px #cdc5c5;
 }
 
-div.post div.texts h2{
+@media screen and (min-width: 600px) {
+  div.post {
+    grid-template-columns: 0.9fr 1.1fr;
+  }
+}
+
+div.post div.texts h2 {
   margin: 0;
   font-size: 1.8rem;
 }
 
-div.post p.info{
-  margin:6px 0;
+div.post div.texts a {
+  text-decoration: none;
+  color: inherit;
+}
+
+div.post p.info {
+  margin: 6px 0;
   color: #888;
-  font-size: .7rem;
+  font-size: 0.7rem;
   font-weight: bold;
   display: flex;
   gap: 5px;
 }
 
-div.post p.info a.author{
+div.post p.info a.author {
   text-decoration: none;
   color: #333;
 }
@@ -70,7 +88,8 @@ div.post p.summary {
   line-height: 1.3rem;
 }
 
-form.login, form.register {
+form.login,
+form.register {
   max-width: 400px;
   margin: 0 auto;
 }
@@ -95,6 +114,61 @@ button {
   padding: 7px 0;
 }
 
-form.login h1, form.register h1 {
+form.login h1,
+form.register h1 {
   text-align: center;
+}
+
+div.post-page div.image {
+  max-height: 300px;
+  display: flex;
+  overflow: hidden;
+}
+
+div.post-Page div.image img {
+  object-fit: contain;
+  object-position: center center;
+  width: 100%;
+}
+
+div.post-Page a {
+  color: #333;
+  text-decoration: underline;
+}
+
+div.post-Page h1 {
+  text-align: center;
+  margin: 10px 0 5px;
+}
+
+div.post-Page time {
+  text-align: center;
+  display: block;
+  font-size: 0.8rem;
+  color: #696767;
+}
+
+div.post-Page div.author {
+  text-align: center;
+  margin-bottom: 20px;
+  font-size: 0.8rem;
+  font-weight: bold;
+}
+
+div.post-Page div.content p {
+  line-height: 1.6rem;
+}
+
+div.edit-row {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+div.post-Page a.edit-btn {
+  text-decoration: none;
+  background-color: #333;
+  color: #fff;
+  padding: 15px 30px;
+  display: inline-block;
+  border-radius: 5px;
 }
