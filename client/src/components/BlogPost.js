@@ -1,26 +1,27 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
-const BlogPost = () => {
+import {formatISO9075} from "date-fns";
+
+const BlogPost = ({ Postdata }) => {
   return (
     <div className="post">
       <div className="image">
         <img
-          src="https://techcrunch.com/wp-content/uploads/2017/09/vitalik-buterin-147a2578.jpg?resize=2048,1365"
-          alt=""
+          src={Postdata.cover}
+          alt="Not Avail"
         />
       </div>
       <div className="texts">
-        <h2>Ethereum co-founder’s warning against ‘pro-crypto’ candidates:</h2>
+        <h2>{Postdata.title}</h2>
         <p className="info">
-          <a href="" className="author">
+          <Link to={'/'} className="author">
             Jatin Singh
-          </a>
-          <time>2023-01-01 16:45</time>
+          </Link>
+          <time>{formatISO9075(new Date(Postdata.createdAt))}</time>
         </p>
         <p className="summary">
-          Vitalik Buterin, the co-founder of Ethereum, issued a warning on
-          Wednesday against choosing a candidate purely based on whether they
-          claim to be “pro-crypto.”
+          {BlogPost.content}
         </p>
       </div>
     </div>

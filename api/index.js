@@ -90,6 +90,11 @@ app.post("/post", uploadMiddleware.single("file"), async (req, res) => {
   return res.json("ok");
 });
 
+app.get("/posts", async (req, res) => {
+  const posts = await PostModel.find({});
+  return res.json(posts);
+});
+
 app.listen(8000, () => {
   console.log("Server has started on PORT: 8000");
 });

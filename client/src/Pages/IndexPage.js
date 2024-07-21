@@ -1,12 +1,22 @@
-import React from 'react'
-import BlogPost from '../components/BlogPost'
+import React, { useEffect, useState } from "react";
+import BlogPost from "../components/BlogPost";
 
 const IndexPage = () => {
-  return (
-    <div>
-        <BlogPost/>
-    </div>
-  )
-}
+  const [posts, setPosts] = useState([]);
+  useEffect(() => {
+    fetch("http://localhost:8000/posts").then((res) => {
+      res.json().then((posts) => {
+        setPosts(posts);
+      });
+    });
+  }, []);
+  return <div>
+    {
+      posts.map((a)=>{
+        return <BlogPost Postdata={a}/>
+      })
+    }
+  </div>;
+};
 
-export default IndexPage
+export default IndexPage;
