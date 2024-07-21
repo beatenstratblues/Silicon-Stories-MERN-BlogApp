@@ -1,10 +1,12 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { Navigate } from "react-router-dom";
+import UserContext from "../UserContext";
 
 const LoginPage = () => {
   const [username, setUsername] = useState("");
   const [password, setpassword] = useState("");
   const [redirect, setredirect] = useState(false);
+  const { setUserInfo } = useContext(UserContext);
 
   async function login(e) {
     e.preventDefault();
@@ -15,14 +17,17 @@ const LoginPage = () => {
       credentials: "include",
     });
     if (response.ok) {
-      setredirect(true);
+      response.json().then((userInfo) => {
+        setUserInfo(userInfo.username);
+        setredirect(true);
+      });
     }
   }
 
   if (redirect) {
     return <Navigate to={"/"} />;
-  } 
-  
+  }
+
   return (
     <form className="login" onSubmit={login}>
       <h1>Login</h1>

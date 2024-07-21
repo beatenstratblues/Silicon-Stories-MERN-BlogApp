@@ -42,7 +42,10 @@ app.post("/login", async (req, res) => {
     //loggedin
     jwt.sign({ username, id: userDoc._id }, secretKey, {}, (err, token) => {
       if (err) throw err;
-      res.cookie("token", token).json("ok");
+      res.cookie("token", token).json({
+        id:userDoc._id,
+        username,
+      });
     });
   } else {
     return res.status(400).json("wrong credentials");
@@ -58,7 +61,7 @@ app.get("/profile", (req, res) => {
   });
 });
 
-app.post("/logout",(req,res)=>{
+app.post("/logout", (req, res) => {
   return res.cookie("token", "").json("ok");
 });
 
