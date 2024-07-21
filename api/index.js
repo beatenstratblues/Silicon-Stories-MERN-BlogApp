@@ -6,12 +6,18 @@ const { saltHashing } = require("./Services/saltHasing");
 const jwt = require("jsonwebtoken");
 const { secretKey } = require("./Constants/SecretKey");
 const cookieParser = require("cookie-parser");
+const path = require("path");
+const multer = require("multer");
+const uploadMiddleware = multer({ dest: "uploads/" });
+const fs = require("fs");
+const { PostModel } = require("./models/postModel");
 
 const app = express();
 
 app.use(cors({ credentials: true, origin: "http://localhost:3000" }));
 app.use(express.json());
 app.use(cookieParser());
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 mongoose
   .connect("mongodb://127.0.0.1:27017/MernBlog")
@@ -43,7 +49,7 @@ app.post("/login", async (req, res) => {
     jwt.sign({ username, id: userDoc._id }, secretKey, {}, (err, token) => {
       if (err) throw err;
       res.cookie("token", token).json({
-        id:userDoc._id,
+        id: userDoc._id,
         username,
       });
     });
@@ -63,6 +69,25 @@ app.get("/profile", (req, res) => {
 
 app.post("/logout", (req, res) => {
   return res.cookie("token", "").json("ok");
+});
+
+app.post("/post", uploadMiddleware.single("file"), async (req, res) => {
+  const { originalname, path } = req.file;
+  const parts = originalname.split(".");
+  const ext = parts[parts.length - 1];
+  const newPath = path + "." + ext;
+  fs.renameSync(path, newPath);
+
+  const { title, summary, content } = req.body;
+
+  const PostDoc = await PostModel.create({
+    title,
+    summary,
+    content,
+    cover: newPath,
+  });
+
+  return res.json("ok");
 });
 
 app.listen(8000, () => {
